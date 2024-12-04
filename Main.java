@@ -40,12 +40,12 @@ class PrintNums implements Runnable{
 
     @Override
     public void run(){
-        Thread thread4 = new Thread(new PrintChar('c', 40));
+        Thread thread4 = new Thread(new PrintChar('c', 500));
         thread4.start();
         try{
             for (int i = 1; i <= num; i++){
                 System.out.print(" " + i);
-                if (i == 50) thread4.join();
+                if (i == 50) thread4.join(); // holds the printNum till thread4 finishes running
             }
         } catch (InterruptedException ex){}
     }
