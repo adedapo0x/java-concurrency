@@ -18,6 +18,11 @@ public class AccountWithSync {
     public static class AddMoneyTask implements Runnable{
         public void run(){
             account.deposit(1);
+
+            // we could either put this here to synchronize or we use the synchronize keyword on the deposit method itself
+            // synchronized(account){
+            //     account.deposit(1);
+            // }
         }
     }
 
@@ -28,6 +33,7 @@ public class AccountWithSync {
             return balance;
         }
 
+        // One method is to use the synchronized keyword here
         public synchronized void deposit(int amount){
             balance = balance + amount;
         }
