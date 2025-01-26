@@ -5,7 +5,7 @@ public class CorruptAccountWithoutSync {
      * Program to represent how a shared resource can be corrupted if accessed by multiple threads simultaneously
      * The example used here is in the case of a bank account. 100 people(threads) trying to donate a penny to a specific account
      */
-    public static Account account = new Account(); // create account object
+    private static Account account = new Account(); // create account object
     public static void main(String[] args) {
         ExecutorService executor = Executors.newCachedThreadPool(); // creates executor
 
