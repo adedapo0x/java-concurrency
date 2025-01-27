@@ -2,7 +2,10 @@ import java.util.concurrent.*;
 
 public class ProducerConsumerUsingBlockingQueue {
     /*
-
+     * Implementation of the producer consumer example, but this time with the inbuilt BlockingQueue
+     * We use an ArrayBlockingQueue specifically here.
+     * With this there is no need for explicitly creating a buffer with locks and putting conditions.
+     * Since the put and take methods have already been synchronized
      */
     private static ArrayBlockingQueue<Integer> buffer = new ArrayBlockingQueue<>(2);
 
