@@ -40,7 +40,7 @@ public class ProducerConsumerUsingBlockingQueue {
                 Thread.sleep((int) (Math.random() * 10000));
                 }
             } catch(InterruptedException ex){
-
+                ex.printStackTrace();
             }
         }
     }
