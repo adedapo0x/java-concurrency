@@ -4,6 +4,21 @@ import java.util.concurrent.locks.*;
 // This is to demonstrate thread cooperation. How conditions work while a lock is acquired
 
 public class DepositAndWithdrawAccount {
+    /*
+     *  The example creates a new inner class named Account to model the account with two meth
+ods,deposit(int) and withdraw(int), a class named DepositTask to add an amount 
+to the balance, a class named WithdrawTask to withdraw an amount from the balance, and a 
+main class that creates and launches two threads.
+ The program creates and submits the deposit task and the withdraw task. 
+The deposit task is purposely put to sleep to let the withdraw task run. When there are 
+not enough funds to withdraw, the withdraw task waits for notification of the balance 
+change from the deposit task.
+ A lock is created. A condition named newDeposit on the lock is created in. A condition is bound to a lock. Before waiting or signaling the condition, a thread 
+must first acquire the lock for the condition. The withdraw task acquires the lock in line, waits for the newDeposit condition when there is not a sufficient amount 
+to withdraw, and releases the lock. The deposit task acquires the lock
+and signals all waiting threads for the newDeposit condition after a new deposit 
+is made.
+     */
     private static Account account = new Account();
     public static void main(String[] args) {
         ExecutorService executor = Executors.newFixedThreadPool(2);
@@ -19,7 +34,7 @@ public class DepositAndWithdrawAccount {
             try{
                 while (true){
                     account.deposit((int)(Math.random() * 10) + 1);
-                    Thread.sleep(1000);
+                    Thread.sleep(1000); // Purposefully delay here to let withdraw thread proceed
                 }
 
             } catch(InterruptedException ex) {
