@@ -27,7 +27,7 @@ public class ProducerConsumerExample {
         }
     }
 
-    public static class ConsumerTask implements Runnable {
+    private static class ConsumerTask implements Runnable {
         public void run(){
             try{
                 while(true){
@@ -57,13 +57,30 @@ public class ProducerConsumerExample {
                     notFull.await();
                 }
                 queue.offer(amount);
-                notEmpty.signalAll();
+                notEmpty.signal();
             } catch (InterruptedException ex){
                 ex.printStackTrace();
             } 
             finally{
                 lock.unlock();
+            }
+        }
 
+        public int read(){
+            int value = 0;
+            lock.lock();
+            try {
+                while (queue.isEmpty()){
+                    System.out.println("\t\t\tWait for notEmpty condition");
+                    notEmpty.await();
+                }
+                value = queue.remove();
+                notFull.signal();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            } finally{
+                lock.unlock();
+                return value;
             }
         }
     }
