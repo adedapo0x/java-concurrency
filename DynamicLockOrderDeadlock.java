@@ -16,6 +16,28 @@ public class DynamicLockOrderDeadlock {
                 toAccount.credit(amount);
             }
         }
+
+        Account firstLock, secondLock;
+        if (fromAccount.getID() < toAccount.getID()){
+            firstLock = fromAccount;
+            secondLock = toAccount;
+        } else {
+            firstLock = toAccount;
+            secondLock = fromAccount;
+        }
+
+        synchronized(firstLock){
+            synchronized(secondLock){
+                if (firstLock == fromAccount){
+                    firstLock.debit(amount);
+                    secondLock.credit(amount);
+                } else {
+                    secondLock.debit(amount);
+                    firstLock.credit(amount);
+                }
+            }
+        }
+
     }
 
     // class definition
