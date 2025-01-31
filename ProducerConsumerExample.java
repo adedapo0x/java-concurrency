@@ -27,7 +27,6 @@ The buffer is actually a first-in, first-out queue
                 int i = 1;
                 // a loop is needed here, else we only write to the buffer once, same for the consumer run method
                 while (true){
-                    System.out.println("Producer writes " + i);
                     buffer.write(i++);
                     // intentionally sleep thread to observe the concept in action properly
                     Thread.sleep((int) (Math.random() * 10000));
@@ -42,7 +41,7 @@ The buffer is actually a first-in, first-out queue
         public void run(){
             try{
                 while(true){
-                    System.out.println("\t\t\tConsumer reads " + buffer.read());
+                    buffer.read();
                     Thread.sleep((int) (Math.random() * 10000));
                 }
             }catch(InterruptedException ex){
@@ -68,6 +67,7 @@ The buffer is actually a first-in, first-out queue
                     System.out.println("Wait for notFull condition");
                     notFull.await(); // while queue is full, we keep the thread waiting and release the lock on queue
                 }
+                System.out.println("Producer writes " + amount);
                 queue.offer(amount);
                 notEmpty.signal(); // allows the read operation to continue as it is no longer empty after a write operation
             } catch (InterruptedException ex){
@@ -78,7 +78,7 @@ The buffer is actually a first-in, first-out queue
             }
         }
 
-        public int read(){
+        public void read(){
             int value = 0;
             lock.lock();
             try {
@@ -87,12 +87,12 @@ The buffer is actually a first-in, first-out queue
                     notEmpty.await(); // waits for queue to not be empty
                 }
                 value = queue.remove();
+                System.out.println("\t\t\tConsumer reads " + value);
                 notFull.signal(); // alerts that queue is no longer empty
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             } finally{
                 lock.unlock();
-                return value;
             }
         }
     }
