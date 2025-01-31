@@ -17,7 +17,12 @@ public class DynamicLockOrderDeadlock {
             }
         }
 
+        // Solution to solve the deadlock issue
+        // Here, we rely on their unique IDs, we are always making sure that the ones with lesser ID number get synchronized first before 
+        // the one with larger ID no matter how the arguments are passed.
+
         Account firstLock, secondLock;
+        // Determine lock order based on accout IDs
         if (fromAccount.getID() < toAccount.getID()){
             firstLock = fromAccount;
             secondLock = toAccount;
@@ -26,6 +31,7 @@ public class DynamicLockOrderDeadlock {
             secondLock = fromAccount;
         }
 
+        // Acquire lock in determined order
         synchronized(firstLock){
             synchronized(secondLock){
                 if (firstLock == fromAccount){
